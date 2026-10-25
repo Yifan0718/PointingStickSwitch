@@ -1,0 +1,38 @@
+name: Windows checks
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Build and test x64, x86 and layouts
+        shell: pwsh
+        run: ./scripts/verify.ps1
+      - name: Install pinned build tool
+        shell: pwsh
+        run: ./scripts/install-build-tools.ps1
+      - name: Build installer
+        shell: pwsh
+        run: ./src/build-installer.ps1 -IsccPath ./artifacts/tools/InnoSetup/ISCC.exe
+      - name: Fresh install, upgrade and uninstall on disposable VM
+        shell: pwsh
+        run: ./scripts/test-installer-ci.ps1
+      - name: Upload reports and installer
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: windows-verification
+          path: |
+            artifacts/tests/*.txt
+            artifacts/tests/layout/*.txt
+            artifacts/release/*.exe
+          if-no-files-found: error
+          retention-days: 30

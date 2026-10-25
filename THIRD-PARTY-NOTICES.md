@@ -1,0 +1,7 @@
+# Third-party notices
+
+- `src/ChineseSimplified.isl`: Inno Setup Simplified Chinese translation by Zhenghan Yang / kirakira and contributors, from [kira-96/Inno-Setup-Chinese-Simplified-Translation](https://github.com/kira-96/Inno-Setup-Chinese-Simplified-Translation). Original notices are retained. MIT license: [licenses/ChineseSimplified-LICENSE.txt](licenses/ChineseSimplified-LICENSE.txt).
+- Release installers are built with [Inno Setup](https://jrsoftware.org/isinfo.php), copyright Jordan Russell and Martijn Laan. Its license is reproduced in [licenses/InnoSetup-LICENSE.txt](licenses/InnoSetup-LICENSE.txt). The compiler itself is not included in this repository. Embedded installer notices are retained.
+- Hardware identifiers and model facts in the catalog and fixtures were researched from official driver metadata and public protocol definitions. Sources and INF digests are in [docs/sources.json](docs/sources.json) and [docs/compatibility.md](docs/compatibility.md). No vendor driver binaries or full INF files are redistributed. The program uses the vendor interface already installed on the user's computer.
+- Linux protocol/product references were used as documentation; this repository does not include Linux driver source. Windows controller code is independently implemented.
+- Dynabook, Toshiba, ThinkPad, TrackPoint, Lenovo, IBM, HP, Dell, Synaptics, ALPS, ELAN and other product names belong to their respective owners. Their mention describes compatibility evidence, not endorsement.

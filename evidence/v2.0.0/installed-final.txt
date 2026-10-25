@@ -1,0 +1,7 @@
+﻿PASS ordinary-user installed client --enable; no elevation requested; verified real state
+PASS ordinary-user installed client --disable; no elevation requested; verified real state
+PASS Unicode desktop icon paths, exact installed targets and toggle/UI arguments
+PASS installed payload matches final build (all four binary/config files)
+PASS service Automatic/Running, Apps registration, user-agent startup and per-device disabled intent
+RESTORED original disabled state
+RESULT=PASS

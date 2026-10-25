@@ -1,0 +1,5 @@
+﻿PASS v2 real SYSTEM-service PnP enabled=True; other 15 inputs unchanged
+PASS v2 real SYSTEM-service PnP enabled=False; other 15 inputs unchanged
+PASS service restart reconciles saved disabled intent after external state change
+RESTORED original enabled=False
+RESULT=PASS

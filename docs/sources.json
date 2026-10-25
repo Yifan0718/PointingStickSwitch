@@ -1,0 +1,42 @@
+[
+  {
+    "family": "dynabook",
+    "source": "https://support.dynabook.com/",
+    "version": "Synaptics 19.5.32.154 (local signed driver)",
+    "inf": "oem65.inf",
+    "inf_sha256": "d3451ea42d25823ea9a611125204a2d04fbff30bc66d97feef5024700eb499a4",
+    "model_rows": 10
+  },
+  {
+    "family": "lenovo",
+    "source": "https://download.lenovo.com/pccbbs/mobiles/n3fel03w.exe",
+    "version": "ELAN 31.21.60.1",
+    "inf": "EPD.inf",
+    "inf_sha256": "799c85a57ad59697f66e45a704af1acb6989f3baf1057810f3a130a21aaa70f2",
+    "model_rows": 118
+  },
+  {
+    "family": "hp",
+    "source": "https://ftp.hp.com/pub/softpaq/sp136001-136500/sp136026.exe",
+    "version": "ELAN 32.2.6.1",
+    "inf": "ETD.inf",
+    "inf_sha256": "115db696c8270ca8c04f53013960341dd25ccb93899276105f13d159aa15d6be",
+    "model_rows": 16
+  },
+  {
+    "family": "dell",
+    "source": "https://downloads.dell.com/FOLDER05929768M/6/Dell-PointStick-Driver_05V45_WIN_10.3201.101.312_A01_04.EXE",
+    "version": "ALPS 10.3201.101.312",
+    "inf": "ApHidFiltrSP.inf",
+    "inf_sha256": "058fe4f4fa527d61c41bd6dee1f263c6c7323b1a960da26a7fa7cd3784d115b7",
+    "model_rows": 20
+  },
+  {
+    "family": "ibmlegacy",
+    "source": "https://download.lenovo.com/ibmdl/pub/pc/pccbbs/mobiles/7bg686ww.exe",
+    "version": "IBM/Lenovo 4.73.1",
+    "inf": "tp4track.inf",
+    "inf_sha256": "81ae9fbea911990680371d2dee59c5be7edcf8a04d31ceb511b223d780f91824",
+    "model_rows": 3
+  }
+]

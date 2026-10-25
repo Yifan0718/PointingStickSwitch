@@ -1,0 +1,13 @@
+﻿Layout geometry and text-metric stress tests. DPI/font scaling is simulated; system display settings are not modified.
+PASS layout-300-620: 6 labels, 5 buttons; measured text fits; no sibling overlap.
+PASS layout-300-360: 6 labels, 5 buttons; measured text fits; no sibling overlap.
+PASS layout-100-620: 6 labels, 5 buttons; measured text fits; no sibling overlap.
+PASS layout-100-360: 6 labels, 5 buttons; measured text fits; no sibling overlap.
+PASS layout-125-620: 6 labels, 5 buttons; measured text fits; no sibling overlap.
+PASS layout-125-360: 6 labels, 5 buttons; measured text fits; no sibling overlap.
+PASS layout-150-620: 6 labels, 5 buttons; measured text fits; no sibling overlap.
+PASS layout-150-360: 6 labels, 5 buttons; measured text fits; no sibling overlap.
+PASS layout-200-620: 6 labels, 5 buttons; measured text fits; no sibling overlap.
+PASS layout-200-360: 6 labels, 5 buttons; measured text fits; no sibling overlap.
+PASS layout-250-620: 6 labels, 5 buttons; measured text fits; no sibling overlap.
+PASS layout-250-360: 6 labels, 5 buttons; measured text fits; no sibling overlap.

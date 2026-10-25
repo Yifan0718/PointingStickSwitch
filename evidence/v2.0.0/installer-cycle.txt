@@ -1,0 +1,6 @@
+﻿PASS upgrade to final v2.0 package (initial v1.1 migration additionally recorded in prior upgrade log)
+PASS real v2 service roundtrip, unrelated-input preservation, state migration and service-restart restoration
+PASS uninstall while panel running; service, program and Apps registration removed
+PASS fresh single-EXE install; service auto-start, x86 helper, desktop shortcuts, user-agent startup, Apps registration
+RESTORED original desired disabled state
+RESULT=PASS

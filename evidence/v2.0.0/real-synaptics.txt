@@ -1,0 +1,5 @@
+PASS TrackPointSwitch.exe logical enabled=0 on real TOSB1008 driver; readback confirmed
+PASS TrackPointSwitch.exe logical enabled=1 on real TOSB1008 driver; readback confirmed
+SKIP SynapticsHost32.exe COM registration unavailable
+RESULT=PASS
+RESTORE native disabled / service desired=0 exit=0

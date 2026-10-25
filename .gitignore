@@ -1,0 +1,7 @@
+/artifacts/
+/.vs/
+*.user
+*.suo
+*.log
+/diagnostic*.json
+/*-diagnostic.json
