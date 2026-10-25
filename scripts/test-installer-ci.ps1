@@ -10,6 +10,9 @@ if($setup.Count -ne 1) { throw 'Expected exactly one installer' }
 $version = [regex]::Match((Get-Content -LiteralPath (Join-Path $repoRoot 'src\Version.cs') -Raw),'Value = "([0-9]+\.[0-9]+\.[0-9]+)"').Groups[1].Value
 $installDir = Join-Path $env:ProgramFiles 'AccuPointSwitch'
 $report = [Collections.Generic.List[string]]::new()
+$report.Add('SOURCE_COMMIT='+$env:GITHUB_SHA)
+$report.Add('INSTALLER_SHA256='+(Get-FileHash -LiteralPath $setup[0].FullName -Algorithm SHA256).Hash)
+$report.Add('OS='+[Environment]::OSVersion.VersionString)
 function Run-Installer([string]$File, [string]$Arguments) {
     $process = Start-Process -FilePath $File -ArgumentList $Arguments -PassThru -WindowStyle Hidden
     if(-not $process.WaitForExit(120000)) { $process.Kill(); throw 'Installer test timeout' }

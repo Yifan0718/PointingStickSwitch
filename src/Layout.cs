@@ -10,16 +10,34 @@ namespace PointingStickSwitch
 {
     internal sealed class WrappedButton : Button
     {
+        private string measuredText;
+        private Font measuredFont;
+        private Padding measuredPadding;
+        private Size natural;
+        private readonly Dictionary<int, Size> measured = new Dictionary<int, Size>();
+        private Size NaturalSize()
+        {
+            if (measuredText != Text || !Object.Equals(measuredFont, Font) || measuredPadding != Padding)
+            {
+                measuredText = Text; measuredFont = Font; measuredPadding = Padding; measured.Clear();
+                var text = TextRenderer.MeasureText(Text, Font);
+                natural = new Size(text.Width + Padding.Horizontal + 12, text.Height + Padding.Vertical + 8);
+            }
+            return natural;
+        }
         public override Size GetPreferredSize(Size proposedSize)
         {
-            var natural = base.GetPreferredSize(Size.Empty);
+            var natural = NaturalSize();
             int width = MaximumSize.Width > 0 ? Math.Min(natural.Width, MaximumSize.Width) : natural.Width;
             if (proposedSize.Width > 0) width = Math.Min(width, proposedSize.Width);
+            Size cached;
+            if (measured.TryGetValue(width, out cached)) return cached;
             var text = TextRenderer.MeasureText(Text, Font, new Size(Math.Max(1, width - Padding.Horizontal - 8), Int32.MaxValue), TextFormatFlags.WordBreak | TextFormatFlags.TextBoxControl);
-            return new Size(width, Math.Max(natural.Height, text.Height + Padding.Vertical + 8));
+            cached = new Size(width, Math.Max(natural.Height, text.Height + Padding.Vertical + 8));
+            measured[width] = cached; return cached;
         }
         internal static int NaturalWidth(Button button)
-        { return TextRenderer.MeasureText(button.Text, button.Font).Width + button.Padding.Horizontal + 12; }
+        { var wrapped = button as WrappedButton; return wrapped != null ? wrapped.NaturalSize().Width : TextRenderer.MeasureText(button.Text, button.Font).Width + button.Padding.Horizontal + 12; }
     }
     internal sealed class ResponsiveButtonRow : TableLayoutPanel
     {
