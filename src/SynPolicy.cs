@@ -43,7 +43,7 @@ namespace PointingStickSwitch
                 if (matches.Count != 1) throw new InvalidOperationException("逻辑指点杆已移除或身份不唯一。");
                 var target = matches[0];
                 if (target.Disabled != 0 && target.Disabled != 1) throw new InvalidOperationException("驱动返回未知的禁用状态。");
-                if (snapshots.Any(x => x.Type == 2 && !x.Disabled.HasValue)) throw new InvalidOperationException("无法核对共享触摸板的状态，停止写入。");
+                if (snapshots.Any(x => x.Type == 2 && !x.Disabled.HasValue)) throw new InvalidOperationException("共享触摸板状态读取失败，请刷新设备。");
                 if (target.Access.Type() != target.Type || target.Access.Connection() != target.Connection || !Safety.Same(target.Access.Pnp(), target.Pnp))
                     throw new InvalidOperationException("逻辑设备身份发生变化。");
                 int wanted = parts[2] == "1" ? 0 : 1;
@@ -62,7 +62,7 @@ namespace PointingStickSwitch
                         }
                         if (!confirmed) throw new InvalidOperationException("Synaptics 驱动未确认状态。");
                         if (snapshots.Any(x => x != target && x.Disabled.HasValue && x.Access.Read() != x.Disabled.Value))
-                            throw new InvalidOperationException("另一个输入设备状态发生变化，停止保存并恢复指点杆。");
+                            throw new InvalidOperationException("其他输入设备状态发生变化，正在恢复指点杆。");
                     }
                     catch (Exception failure)
                     {
@@ -84,8 +84,8 @@ namespace PointingStickSwitch
                 result.Targets.Add(new Target { Token = d.Token, Id = d.Pnp, Family = "syncom", Name = "Synaptics 逻辑指点杆",
                     Enabled = d.Disabled == 0, Disabled = d.Disabled == 1, CanSwitch = unique && (d.Disabled == 0 || d.Disabled == 1),
                     State = !unique ? "身份重复，无法独立控制" : d.Disabled == 0 ? "已启用" : d.Disabled == 1 ? "已关闭" : "驱动状态未知",
-                    Evidence = "厂商 SynCOM 类型 " + d.Type + "；本机 HIDPD 接口验证，其他驱动待验证",
-                    Scope = "厂商逻辑指点杆；按键是否一起关闭取决于驱动", Driver = "连接类型 " + d.Connection });
+                    Evidence = "厂商 SynCOM 类型 " + d.Type + " · 逻辑接口控制",
+                    Scope = "逻辑指点杆；按键按厂商驱动的接口划分控制", Driver = "连接类型 " + d.Connection });
             }
             return result;
         }

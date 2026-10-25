@@ -27,13 +27,13 @@ namespace PointingStickSwitch
         internal static List<Intent> Parse(string value)
         {
                 if (value == null || !value.TrimStart().StartsWith("[", StringComparison.Ordinal) || !value.TrimEnd().EndsWith("]", StringComparison.Ordinal))
-                    throw new IOException("保存的设备状态不是有效列表，未执行自动恢复。");
+                    throw new IOException("保存的设备状态列表格式错误，请检查保存的设备设置。");
                 var raw = Json.Read<List<Dictionary<string, object>>>(value);
                 if (raw == null || raw.Count > 128 || raw.Any(x => x == null || !x.ContainsKey("Token") || !(x["Token"] is string) || !x.ContainsKey("Enabled") || !(x["Enabled"] is bool)))
-                    throw new IOException("保存的设备状态缺少字段或类型不正确，未执行自动恢复。");
+                    throw new IOException("保存的设备状态字段错误，请检查保存的设备设置。");
                 var list = raw.Select(x => new Intent { Token = (string)x["Token"], Enabled = (bool)x["Enabled"] }).ToList();
                 if (list == null || list.Count > 128 || list.Any(x => x == null || !Wire.ValidToken(x.Token)) || list.Select(x => x.Token).Distinct().Count() != list.Count)
-                    throw new IOException("保存的设备状态无效，未执行自动恢复。");
+                    throw new IOException("保存的设备状态格式错误，请检查保存的设备设置。");
                 return list;
         }
         public void Write(List<Intent> intents)
@@ -73,7 +73,7 @@ namespace PointingStickSwitch
         internal static bool ParseLogicalValue(object value, RegistryValueKind kind)
         {
             if (kind != RegistryValueKind.DWord || !(value is int) || ((int)value != 0 && (int)value != 1))
-                throw new IOException("保存的逻辑设备状态无效，未执行自动恢复。");
+                throw new IOException("保存的逻辑设备状态格式错误，请检查保存的设备设置。");
             return (int)value == 1;
         }
         internal static List<Intent> ReadLogical()

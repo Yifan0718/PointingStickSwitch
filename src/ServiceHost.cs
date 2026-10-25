@@ -214,7 +214,7 @@ namespace PointingStickSwitch
             {
                 if (key == null) return;
                 if (!String.Equals(Convert.ToString(key.GetValue("ImagePath")), ImagePath, StringComparison.OrdinalIgnoreCase))
-                    throw new InvalidOperationException("已存在同名但路径不同的服务，已停止操作。");
+                    throw new InvalidOperationException("已存在同名服务，请检查其安装路径。");
             }
         }
 
@@ -290,7 +290,7 @@ namespace PointingStickSwitch
             VerifyExisting();
             if (!Installed) return;
             if (UserSettings.ReadLogical().Exists(x => !x.Enabled))
-                throw new InvalidOperationException("当前用户保存了关闭的 Synaptics 逻辑指点杆。请先在普通权限的控制面板启用它，再运行卸载；后台服务不会以管理员身份加载用户厂商接口。");
+                throw new InvalidOperationException("请先从普通用户桌面打开控制面板，启用 Synaptics 逻辑指点杆，再运行卸载。");
             // Stop the reconciler before releasing persisted devices, preventing a
             // concurrent timer from re-disabling one during uninstall.
             if (Running) using (var controller = new ServiceController(Name))

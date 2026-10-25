@@ -50,7 +50,7 @@ namespace PointingStickSwitch
                 {
                     int handle = Convert.ToInt32(api.FindDevice(0, 0, previous));
                     if (handle == -1) break;
-                    if (!seen.Add(handle)) throw new InvalidOperationException("Synaptics 枚举重复，停止操作。");
+                    if (!seen.Add(handle)) throw new InvalidOperationException("Synaptics 返回了重复设备，请刷新设备。");
                     previous = handle;
                     var d = new Logical { Device = Activator.CreateInstance(devType) }; devices.Add(d);
                     d.Device.Select(handle);
@@ -101,7 +101,7 @@ namespace PointingStickSwitch
                 if (!process.WaitForExit(8000))
                 {
                     try { process.Kill(); } catch (InvalidOperationException) { }
-                    throw new TimeoutException("厂商接口响应超时，已结束本次探测。驱动状态未确认。");
+                    throw new TimeoutException("厂商接口响应超时，请刷新设备状态。");
                 }
                 if (process.ExitCode != 0 || !String.IsNullOrEmpty(error.Result)) throw new IOException("厂商接口进程失败：" + error.Result);
                 return Json.Read<SynReply>(output.Result);

@@ -68,7 +68,7 @@ namespace PointingStickSwitch
         internal static void CheckTopology(DeviceRecord target, List<DeviceRecord> snapshot)
         {
             if (Protected(target) || snapshot.Any(x => Descendant(x, target) && Protected(x)))
-                throw new InvalidOperationException("这个接口包含键盘或触摸输入，不能单独作为指点杆关闭。");
+                throw new InvalidOperationException("这是键盘或触摸输入的共享接口，请选择独立指点杆接口。");
         }
         internal static bool OtherInputsChanged(List<DeviceRecord> before, List<DeviceRecord> after, DeviceRecord target)
         {
@@ -110,7 +110,7 @@ namespace PointingStickSwitch
             {
                 var before = backend.Enumerate();
                 var target = Resolve(before, token);
-                if (!target.Healthy) throw new InvalidOperationException(target.State + "；不执行切换。");
+                if (!target.Healthy) throw new InvalidOperationException(target.State + "；请检查设备后重试。");
                 bool enabled = requested ?? !target.Enabled;
                 if (!enabled) Safety.CheckTopology(target, before);
                 // Save the explicit intent before actuation. A process/power failure can be
@@ -143,7 +143,7 @@ namespace PointingStickSwitch
                     }
                     DeviceRecord after = Confirm(token, enabled, target.Identity);
                     if (!enabled && Safety.OtherInputsChanged(before, backend.Enumerate(), target))
-                        throw new InvalidOperationException("其他输入设备状态也发生变化；已尝试恢复指点杆，未保存关闭状态。");
+                        throw new InvalidOperationException("其他输入设备状态发生变化，正在恢复原状态。");
                     return MakeTarget(after);
                 }
                 catch (Exception failure)
@@ -155,7 +155,7 @@ namespace PointingStickSwitch
                     if (attempted) try
                     {
                         var live = Resolve(backend.Enumerate(), token);
-                        if (live.Identity != target.Identity) throw new InvalidOperationException("身份已变化，停止恢复调用");
+                        if (live.Identity != target.Identity) throw new InvalidOperationException("设备身份已变化，请刷新设备");
                         backend.Set(live, target.Enabled); Confirm(token, target.Enabled, target.Identity);
                     }
                     catch (Exception ex) { errors.Add("恢复尚未确认：" + ex.Message); }
@@ -209,7 +209,7 @@ namespace PointingStickSwitch
             if (!String.IsNullOrEmpty(saved))
             {
                 var selected = choices.SingleOrDefault(x => x.Token == saved);
-                if (selected == null) throw new InvalidOperationException("已选择的指点杆未连接。请连接设备，或在控制面板重新选择；不会自动切换到其他设备。");
+                if (selected == null) throw new InvalidOperationException("请连接已选择的指点杆，或在控制面板重新选择设备。");
                 return selected;
             }
             if (choices.Count != 1) throw new InvalidOperationException(choices.Count == 0 ? "尚未找到可独立控制的指点杆。可导出诊断信息。" : "发现多个指点杆，请先在控制面板选择一个。");

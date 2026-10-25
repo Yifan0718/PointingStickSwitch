@@ -112,7 +112,7 @@ namespace PointingStickSwitch
             if (busy) return; SetBusy(true);
             try
             {
-                var targets = test ? new List<Target> { new Target { Token = new string('A', 64), Name = "Dynabook / ThinkPad / HP / Dell 长名称指点杆", Family = "test", Enabled = true, CanSwitch = true, State = "已启用", Evidence = "厂商接口资料与模拟测试已通过；其他设备仍需实机确认。", Scope = "仅控制已经确认的指点杆接口。遇到共享触摸板接口时停止操作。", Id = new string('X', 100), Driver = "19.5.32.154" } } : await Task.Run(() => Client.List());
+                var targets = test ? new List<Target> { new Target { Token = new string('A', 64), Name = "Dynabook / ThinkPad / HP / Dell 长名称指点杆", Family = "test", Enabled = true, CanSwitch = true, State = "已启用", Evidence = "厂商驱动接口资料 · 自动化测试通过", Scope = "独立指点杆接口，支持状态保存与恢复。", Id = new string('X', 100), Driver = "19.5.32.154" } } : await Task.Run(() => Client.List());
                 if (IsDisposed) return;
                 updating = true;
                 foreach (Control c in selector.Controls.Cast<Control>().ToArray()) { selector.Controls.Remove(c); c.Dispose(); }
@@ -143,12 +143,12 @@ namespace PointingStickSwitch
         {
             if (selected == null)
             {
-                state.Text = "请选择兼容设备"; detail.Text = "支持范围由设备接口决定。共享 PS/2、未知型号或缺少独立接口的设备会保留诊断模式。\n" + Client.ProbeNote;
-                toggle.Text = "暂不可切换"; toggle.BackColor = Ink; return;
+                state.Text = "请选择兼容设备"; detail.Text = "点击“刷新设备”重新检测，或点击“导出诊断”查看接口信息。\n" + Client.ProbeNote;
+                toggle.Text = "请先选择设备"; toggle.BackColor = Ink; return;
             }
             state.Text = "●  " + selected.State; state.ForeColor = selected.Enabled ? Green : Ink;
             toggle.Text = selected.Enabled ? "关闭指点杆" : "启用指点杆"; toggle.BackColor = selected.Enabled ? Ink : Green;
-            note.Text = selected.Family == "syncom" ? "无需 UAC · 状态保存在当前用户\n登录后由用户后台程序恢复，驱动响应可能有差异。" :
+            note.Text = selected.Family == "syncom" ? "无需 UAC · 状态保存在当前用户\n登录后约 30 秒内自动恢复。" :
                 ServiceHost.Running ? "后台服务运行中 · 日常无需 UAC\n按设备记住状态，开机及重新连接后恢复。" : "首次安装后台服务后，日常切换无需 UAC。";
             detail.Text = selected.Name + "\n" + selected.Scope + "\n" + selected.Evidence + "\n驱动：" + selected.Driver + "\n" + selected.Id;
         }

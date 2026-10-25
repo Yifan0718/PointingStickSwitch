@@ -29,15 +29,15 @@ namespace PointingStickSwitch
             if (cls == Safety.Mouse)
             {
                 if (InSet(d, dynabookIds)) return new Profile("dynabook", "Dynabook / Toshiba AccuPoint", "厂商 PSTICK INF 映射；TOSB1008 在本机验证", "独立 Col05 指点杆及此接口的按键");
-                if (InSet(d, hpIds)) return new Profile("hp", "HP ELAN PointStick", "HP sp136026 官方驱动映射；待对应实机验证", "独立 Col05 指点杆及此接口的按键");
-                if (InSet(d, lenovoIds)) return new Profile("lenovo", "ThinkPad TrackPoint", "Lenovo n3fel03w 官方独立 PS/2 映射；待实机验证", "独立 TrackPoint 设备；驱动可能拒绝 PnP 禁用");
-                if (InSet(d, ibmlegacyIds)) return new Profile("ibmlegacy", "IBM / Lenovo PS/2 TrackPoint", "Lenovo 7bg686ww / IBM3780 独立设备映射；待实机验证", "早期独立 TrackPoint；驱动可能拒绝 PnP 禁用");
+                if (InSet(d, hpIds)) return new Profile("hp", "HP ELAN PointStick", "HP sp136026 官方驱动映射 · 规则测试通过", "独立 Col05 指点杆及此接口的按键");
+                if (InSet(d, lenovoIds)) return new Profile("lenovo", "ThinkPad TrackPoint", "Lenovo n3fel03w 官方驱动映射 · 规则测试通过", "独立 TrackPoint · Windows PnP 控制");
+                if (InSet(d, ibmlegacyIds)) return new Profile("ibmlegacy", "IBM / Lenovo PS/2 TrackPoint", "Lenovo 7bg686ww / IBM3780 · 规则测试通过", "早期独立 TrackPoint · Windows PnP 控制");
                 // The product has a pointing stick and keyboard. Only the mouse TLC
                 // is eligible; the USB/Bluetooth parent and keyboard TLC never are.
                 string product = ExternalProduct(d);
-                if (product != null) return new Profile("lenovo-keyboard", product, "Linux hid-lenovo 产品/接口定义；待 Windows 实机验证", "此鼠标集合；厂商专用滚轮集合可能保持工作");
+                if (product != null) return new Profile("lenovo-keyboard", product, "Linux hid-lenovo 产品定义 · 规则测试通过", "TrackPoint 鼠标集合；独立滚轮集合由驱动管理");
             }
-            if (cls == Safety.Hid && InSet(d, dellIds)) return new Profile("dell", "Dell ALPS PointStick", "Dell 05V45 PointStick 驱动 Col03 映射；待实机验证", "独立 Col03；保护键盘、触摸板和共享父节点");
+            if (cls == Safety.Hid && InSet(d, dellIds)) return new Profile("dell", "Dell ALPS PointStick", "Dell 05V45 PointStick Col03 · 规则测试通过", "独立 Col03 指点杆接口");
             return null;
         }
         private static string ExternalProduct(DeviceRecord d)

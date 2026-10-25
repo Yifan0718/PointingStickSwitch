@@ -73,7 +73,7 @@ namespace PointingStickSwitch
         {
             if (result == 0) return;
             string text = result == 0x33 ? "需要管理员服务" : result == 0x17 ? "驱动拒绝禁用；请使用厂商指点杆设置" :
-                result == 0x22 ? "Windows 要求重启；本程序不会自动重启" : "Windows 设备调用失败";
+                result == 0x22 ? "Windows 要求重启，请保存工作后重启电脑" : "Windows 设备调用失败";
             throw new InvalidOperationException(operation + "：" + text + " (CONFIGRET 0x" + result.ToString("X") + ")");
         }
         [StructLayout(LayoutKind.Sequential)] private struct DevInfo { internal uint Size; internal Guid ClassGuid; internal uint DevInst; internal IntPtr Reserved; }

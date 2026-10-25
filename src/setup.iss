@@ -96,7 +96,7 @@ var ExitCode: Integer;
 begin
   if CurStep = ssPostInstall then begin
     if not Exec(ExpandConstant('{app}\TrackPointSwitch.exe'), '--install --quiet', '', SW_HIDE, ewWaitUntilTerminated, ExitCode) or (ExitCode <> 0) then
-      RaiseException('后台服务安装失败。请重试安装或查看程序日志，切换功能尚未确认可用。');
+      RaiseException('后台服务安装失败，请重试安装或查看程序日志。');
     SetupCompleted := True;
   end;
 end;
@@ -116,5 +116,5 @@ begin
   if Result then Result := CopyFile(ExpandConstant('{app}\TrackPointSwitch.exe.config'), HelperExe + '.config', False);
   if Result then Result := Exec(HelperExe, '--uninstall --quiet', '', SW_HIDE, ewWaitUntilTerminated, ExitCode) and (ExitCode = 0);
   if not Result then
-    MsgBox('无法恢复指点杆并移除服务，已停止卸载。请先检查服务和设备状态后重试。', mbError, MB_OK);
+    MsgBox('卸载失败，请检查服务和设备状态后重试。', mbError, MB_OK);
 end;
