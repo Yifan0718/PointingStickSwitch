@@ -1,0 +1,24 @@
+﻿PASS 167 official INF model rows and aliases; negative class/interface/root/absence cases
+PASS legacy shared PS/2, virtual mice and generic AUI testing IDs rejected
+PASS external keyboards: only exact product mouse collections, never keyboard/USB parent
+PASS Synaptics logical types and stable identity; reject mouse/touchpad/keyboard
+PASS protocol rejects arbitrary paths, scripts, bad lengths, case, control characters, unknown versions
+PASS Synaptics shared PS/2 policy: touchpad preservation, both stick types, duplicates, veto, timeout and collateral rollback
+PASS single target, multiple targets, missing selection and no fallback
+PASS round trip, per-device persistence, idempotence and unrelated mouse preservation
+PASS driver veto, timeout and rollback leave no failed saved intent
+PASS persistence failure prevents hardware write
+PASS corrupt saved state cannot default a missing boolean to disabled
+PASS hot unplug and driver replacement before actuation are rejected
+PASS protect keyboard descendants and rollback if another input stops
+PASS reboot/wake restore and reconnect by identity; keep disconnected state; never switch another device
+PASS uninstall restores all managed devices and rejects disconnected disabled devices
+PASS service shutdown cancels remaining restoration before another hardware write
+PASS 100 concurrent toggles serialize with reconciliation
+PASS 2000 randomized enable/disable/toggle/reboot operations preserve model and unrelated inputs
+PASS real Windows named pipe transport: ACL, client/server PID, UTF-8, invalid commands, stalled client recovery
+ENV process=x86 inputs=3 supported=0
+PASS real Windows SetupAPI/ConfigManager enumeration, read-only
+PASS 2.0.1 logical transactions, malformed settings, topology and identity regressions
+ASSERTIONS=13670
+RESULT=PASS

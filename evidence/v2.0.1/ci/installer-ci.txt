@@ -1,0 +1,8 @@
+SOURCE_COMMIT=7832b8ed23d02796f6d9b750e50ae9fb484aaafe
+INSTALLER_SHA256=32909980688E931C528CB53BCB9D1BA68E7266C86721AC97408A89B2FEE5D6A4
+OS=Microsoft Windows NT 10.0.20348.0
+PASS fresh install: service, payload hashes, version and desktop shortcuts
+PASS upgrade install: service, payload hashes, version and desktop shortcuts
+PASS uninstall: service and application removed
+SCOPE disposable Windows VM; no physical pointing-stick actuation tested
+RESULT=PASS

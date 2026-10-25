@@ -54,6 +54,8 @@ Get-FileHash .\PointingStickSwitch-Setup-2.0.1.exe -Algorithm SHA256
 
 构建产物在 `artifacts/bin/`，安装包在 `artifacts/release/`，验证结果在 `artifacts/tests/`。发布构建使用 Inno Setup 6.7.3。版本号统一维护在 `src/Version.cs`。
 
+GitHub Actions 在干净 Windows 虚拟机完成首次安装、覆盖升级、卸载及桌面快捷方式检查。Release 安装包直接取自通过测试的 CI 产物，附对应提交与文件摘要的安装测试报告。发布步骤见 [docs/releasing.md](docs/releasing.md)。
+
 自动测试不会改变物理设备状态：直接运行生产策略、模拟故障，在真实 Windows 管道上测试 IPC，并只读枚举本机设备。x64/x86 各 13,670 项断言；另有 24 组 100%–300% 字体 / 控件布局检查。布局检查不等于真实显示器间 DPI 切换测试。实机与安装测试记录按版本保存在 `evidence/`，2.0.0 记录不能视作 2.0.1 的安装实测。
 
 ```text
