@@ -13,7 +13,9 @@ try {
     $release = Join-Path $repoRoot 'artifacts\release'
     $setup = Join-Path $release ('PointingStickSwitch-Setup-'+$version+'.exe')
     if(-not (Test-Path -LiteralPath $setup)) { throw 'Build or download the verified installer first' }
-    if((Get-Item -LiteralPath $setup).VersionInfo.FileVersion -ne ($version+'.0')) { throw 'Installer version mismatch' }
+    $versionInfo = (Get-Item -LiteralPath $setup).VersionInfo
+    $numericVersion = @($versionInfo.FileMajorPart,$versionInfo.FileMinorPart,$versionInfo.FileBuildPart,$versionInfo.FilePrivatePart) -join '.'
+    if($numericVersion -ne ($version+'.0')) { throw 'Installer version mismatch' }
     $verification = Join-Path $release 'installer-ci.txt'
     $report = Get-Content -LiteralPath $verification -Raw
     $verifiedCommit = [regex]::Match($report,'(?m)^SOURCE_COMMIT=([0-9a-f]{40})').Groups[1].Value
