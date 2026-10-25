@@ -30,10 +30,13 @@ try {
         }
         if((Get-Item -LiteralPath (Join-Path $installDir 'TrackPointSwitch.exe')).VersionInfo.FileVersion -ne ($version+'.0')) { throw 'Application version mismatch' }
         $shell = New-Object -ComObject WScript.Shell
+        $shortcutIndex = 0
         $allLinks = @(Get-ChildItem -LiteralPath ([Environment]::GetFolderPath('CommonDesktopDirectory')) -Filter '*.lnk' | ForEach-Object {
-            $shortcut = $shell.CreateShortcut($_.FullName)
-            # Materialize COM properties: array member enumeration is inconsistent
-            # for raw COM wrappers across PowerShell runtimes.
+            # WSH may fail to load a Unicode shortcut filename on a non-Chinese
+            # system locale. Inspect an identical copy with an ASCII filename.
+            $readPath = Join-Path $repoRoot ('artifacts\tests\shortcut-check-'+($shortcutIndex++)+'.lnk')
+            Copy-Item -LiteralPath $_.FullName -Destination $readPath -Force
+            $shortcut = $shell.CreateShortcut($readPath)
             [pscustomobject]@{Name=$_.Name; TargetPath=$shortcut.TargetPath; Arguments=$shortcut.Arguments}
         })
         $links = @($allLinks | Where-Object {$_.TargetPath -eq (Join-Path $installDir 'TrackPointSwitch.exe')})
