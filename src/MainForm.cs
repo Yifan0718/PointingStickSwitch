@@ -13,7 +13,7 @@ namespace PointingStickSwitch
     {
         private readonly Label state = new Label(), note = new Label(), detail = new Label();
         private readonly TableLayoutPanel selector = Panel(0);
-        private readonly Button toggle = new Button(), enable = new Button(), refresh = new Button(), install = new Button(), diagnose = new Button();
+        private readonly Button toggle = new WrappedButton(), enable = new WrappedButton(), refresh = new WrappedButton(), install = new WrappedButton(), diagnose = new WrappedButton();
         private readonly Panel viewport = new Panel();
         private readonly TableLayoutPanel root;
         private bool busy, updating;
@@ -97,7 +97,7 @@ namespace PointingStickSwitch
         private static Label Label(string text, Font font, Color color) { var label = new Label { Text = text, Font = font, ForeColor = color }; InitLabel(label); return label; }
         private static void Wrap(TableLayoutPanel panel)
         {
-            Action wrap = delegate { foreach (Control c in panel.Controls) if (c is Label) c.MaximumSize = new Size(Math.Max(1, panel.ClientSize.Width - panel.Padding.Horizontal - c.Margin.Horizontal), 0); };
+            Action wrap = delegate { foreach (Control c in panel.Controls) if (c is Label || c is Button) c.MaximumSize = new Size(Math.Max(1, panel.ClientSize.Width - panel.Padding.Horizontal - c.Margin.Horizontal), 0); };
             panel.SizeChanged += delegate { wrap(); }; wrap();
         }
         private void Fit()

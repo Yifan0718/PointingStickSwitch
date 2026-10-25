@@ -8,6 +8,19 @@ using System.Windows.Forms;
 
 namespace PointingStickSwitch
 {
+    internal sealed class WrappedButton : Button
+    {
+        public override Size GetPreferredSize(Size proposedSize)
+        {
+            var natural = base.GetPreferredSize(Size.Empty);
+            int width = MaximumSize.Width > 0 ? Math.Min(natural.Width, MaximumSize.Width) : natural.Width;
+            if (proposedSize.Width > 0) width = Math.Min(width, proposedSize.Width);
+            var text = TextRenderer.MeasureText(Text, Font, new Size(Math.Max(1, width - Padding.Horizontal - 8), Int32.MaxValue), TextFormatFlags.WordBreak | TextFormatFlags.TextBoxControl);
+            return new Size(width, Math.Max(natural.Height, text.Height + Padding.Vertical + 8));
+        }
+        internal static int NaturalWidth(Button button)
+        { return TextRenderer.MeasureText(button.Text, button.Font).Width + button.Padding.Horizontal + 12; }
+    }
     internal sealed class ResponsiveButtonRow : TableLayoutPanel
     {
         private readonly Button left, right;
@@ -32,7 +45,7 @@ namespace PointingStickSwitch
         {
             if (!arranging && left != null && right != null)
             {
-                int need = Math.Max(left.GetPreferredSize(Size.Empty).Width, right.GetPreferredSize(Size.Empty).Width);
+                int need = Math.Max(WrappedButton.NaturalWidth(left), WrappedButton.NaturalWidth(right));
                 bool stack = ClientSize.Width < 2 * (need + LogicalToDeviceUnits(6));
                 if (stack != stacked)
                 {
@@ -49,6 +62,8 @@ namespace PointingStickSwitch
                     right.Margin = stack ? Padding.Empty : new Padding(gap, 0, 0, 0);
                     ResumeLayout(false); arranging = false;
                 }
+                int available = Math.Max(1, stacked ? ClientSize.Width : ClientSize.Width / 2 - LogicalToDeviceUnits(6));
+                left.MaximumSize = right.MaximumSize = new Size(available, 0);
             }
             base.OnLayout(e);
         }
