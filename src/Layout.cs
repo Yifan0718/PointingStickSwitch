@@ -88,6 +88,8 @@ namespace PointingStickSwitch
                         {
                             Size preferred = c.GetPreferredSize(new Size(c.Width, 0));
                             if (c.Height < preferred.Height) throw new Exception("Clipped label at " + scale + "/" + width + ": " + c.Text);
+                            var measured = TextRenderer.MeasureText(c.Text, c.Font, new Size(Math.Max(1, c.Width), Int32.MaxValue), TextFormatFlags.WordBreak | TextFormatFlags.TextBoxControl);
+                            if (c.Height < measured.Height) throw new Exception("Painted label text exceeds bounds at " + scale + "/" + width + ": " + c.Text);
                             labels++;
                         }
                         if (c is Button)

@@ -80,7 +80,7 @@ namespace PointingStickSwitch
                 await RefreshAsync();
                 if (!IsDisposed)
                 {
-                    if (selector.Controls.Count > 0) selector.Controls[0].Focus();
+                    if (selector.Controls.Count > 0) ((DeviceChoice)selector.Controls[0]).FocusChoice();
                     viewport.AutoScrollPosition = Point.Empty; Fit();
                 }
             };
@@ -122,8 +122,16 @@ namespace PointingStickSwitch
                 foreach (var item in targets)
                 {
                     var target = item;
-                    var choice = new RadioButton { Text = target.ToString(), AutoSize = true, Margin = new Padding(0, 4, 0, 8), MaximumSize = new Size(Math.Max(1, selector.ClientSize.Width), 0), Checked = selected == target };
-                    choice.CheckedChanged += delegate { if (!updating && choice.Checked) { selected = target; if (!test) UserSettings.Selected = target.Token; ShowTarget(); SetBusy(false); } };
+                    var choice = new DeviceChoice(target.ToString()) { MaximumSize = new Size(Math.Max(1, selector.ClientSize.Width), 0), Checked = selected == target };
+                    choice.CheckedChanged += delegate
+                    {
+                        if (updating || !choice.Checked) return;
+                        updating = true;
+                        foreach (DeviceChoice other in selector.Controls) if (other != choice) other.Checked = false;
+                        updating = false; selected = target;
+                        if (!test) UserSettings.Selected = target.Token;
+                        ShowTarget(); SetBusy(false);
+                    };
                     selector.Controls.Add(choice);
                 }
                 updating = false; ShowTarget();

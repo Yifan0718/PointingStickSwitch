@@ -7,9 +7,10 @@ $ResultsDirectory = (Resolve-Path -LiteralPath $ResultsDirectory).Path
 $layoutDirectory = Join-Path $ResultsDirectory 'layout'
 $appPath = Join-Path $repoRoot 'artifacts\bin\TrackPointSwitch.exe'
 # Wait only for this process, not for a process tree that can include a user agent.
-$layout = Start-Process -FilePath $appPath -ArgumentList ('--layout-test "'+$layoutDirectory+'" --quiet') -PassThru -WindowStyle Hidden
+$layoutError = Join-Path $ResultsDirectory 'layout-error.txt'
+$layout = Start-Process -FilePath $appPath -ArgumentList ('--layout-test "'+$layoutDirectory+'" --quiet') -PassThru -WindowStyle Hidden -RedirectStandardError $layoutError
 if(-not $layout.WaitForExit(120000)) { $layout.Kill(); throw 'Layout test timed out' }
-if($layout.ExitCode -ne 0) { throw 'Layout test failed' }
+if($layout.ExitCode -ne 0) { throw ('Layout test failed: '+(Get-Content -LiteralPath $layoutError -Raw)) }
 $compilerPath = Join-Path $env:WINDIR 'Microsoft.NET\Framework\v4.0.30319\csc.exe'
 $sources = @(Get-ChildItem -LiteralPath (Join-Path $repoRoot 'src') -Filter '*.cs' | ForEach-Object {$_.FullName})
 $fontTest = Join-Path $ResultsDirectory 'LayoutStress.exe'
